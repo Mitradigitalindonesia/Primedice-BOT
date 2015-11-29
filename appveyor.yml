@@ -1,6 +1,7 @@
 environment:
   semver_version: '0.1.0'
 version: $(semver_version)-ci{build}
+configuration: Release
 assembly_info:
   patch: true
   file: '**\AssemblyInfo.*'
@@ -11,8 +12,7 @@ before_build:
   - nuget restore "Source"
 build:
   publish_nuget: true
-after_tests:
-  - nuget pack "Source/Primedice.NET/Primedice.NET.csproj" -Prop Configuration=Release
+  parallel: true
 deploy:
   provider: NuGet
   api_key:
@@ -21,4 +21,4 @@ deploy:
     branch: master
   artifact: '**\*.nupkg'
 cache:
-  - Source\packages -> '**\packages.config'
+  - packages -> '**\packages.config'
