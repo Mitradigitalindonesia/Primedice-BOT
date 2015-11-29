@@ -8,14 +8,17 @@ assembly_info:
   assembly_file_version: $(semver_version)
   assembly_informational_version: $(semver_version)
 before_build:
-  - cd "Source"
-  - nuget restore
-  - cd ..
+  - nuget restore "Source"
+build:
+  publish_nuget: true
+after_tests:
+  - nuget pack "Source/Primedice.NET/Primedice.NET.csproj" -Prop Configuration=Release
 deploy:
   provider: NuGet
   api_key:
     secure: 9Ye4uKc6ajyyP+DceXAUufu0xaGA36Fzz8TM0VLu94+1327wHLQsXbCVS92tPcnp
   on:
     branch: master
-    appveyor_repo_tag: true
   artifact: '**\*.nupkg'
+cache:
+  - Source\packages -> '**\packages.config'

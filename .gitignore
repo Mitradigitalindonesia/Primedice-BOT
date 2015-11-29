@@ -32,8 +32,9 @@ x64/
 .builds
 *.dotCover
 
-# NuGet Packages' directory
+# NuGet
 packages
+*.nupkg
 
 # Visual Studio profiler
 *.psess
