@@ -1,5 +1,5 @@
 environment:
-  semver_version: 0.1.0
+  semver_version: '0.1.0'
 version: $(semver_version)-ci{build}
 assembly_info:
   patch: true
@@ -8,7 +8,7 @@ assembly_info:
   assembly_file_version: $(semver_version)
   assembly_informational_version: $(semver_version)
 build:
-  project: Source/Primedice.NET.sln
+  project: 'Source/Primedice.NET.sln'
 before_build:
   - nuget restore
 deploy:
@@ -18,4 +18,4 @@ deploy:
   on:
     branch: master
     appveyor_repo_tag: true
-  artifact: /.*\.nupkg/
+  artifact: '**/*.nupkg'
