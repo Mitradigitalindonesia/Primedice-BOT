@@ -19,6 +19,6 @@ deploy:
     secure: 9Ye4uKc6ajyyP+DceXAUufu0xaGA36Fzz8TM0VLu94+1327wHLQsXbCVS92tPcnp
   on:
     branch: master
-  artifact: '**\*.nupkg'
+  artifact: /.*\.nupkg/
 cache:
-  - packages -> '**\packages.config'
+  - Source\packages -> '**\packages.config'
