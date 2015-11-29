@@ -10,6 +10,7 @@ assembly_info:
 before_build:
   - cd "Source"
   - nuget restore
+  - cd ..
 deploy:
   provider: NuGet
   api_key:

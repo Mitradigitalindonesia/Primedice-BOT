@@ -1,19 +1,16 @@
-﻿using System.Resources;
-using System.Reflection;
+﻿using System.Reflection;
+using System.Resources;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 // General Information about an assembly is controlled through the following 
-// set of attributes. Change these attribute values to modify the information
+// set of attributes. Change these attribute values to modify the information 
 // associated with an assembly.
 [assembly: AssemblyTitle("Primedice.NET.Tests")]
 [assembly: AssemblyDescription("Unit tests for Primedice.NET")]
-[assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Kristóf Poduszló")]
 [assembly: AssemblyProduct("Primedice.NET.Tests")]
 [assembly: AssemblyCopyright("Copyright © Kristóf Poduszló 2015")]
-[assembly: AssemblyTrademark("")]
-[assembly: AssemblyCulture("")]
 
 // Setting ComVisible to false makes the types in this assembly not visible 
 // to COM components.  If you need to access a type in this assembly from 
@@ -26,7 +23,7 @@ using System.Runtime.InteropServices;
 // Version information for an assembly consists of the following four values:
 //
 //      Major Version
-//      Minor Version 
+//      Minor Version
 //      Build Number
 //      Revision
 //
