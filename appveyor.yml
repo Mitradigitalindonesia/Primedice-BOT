@@ -1,12 +1,14 @@
 environment:
-  semver_version: '0.1.0'
+  semver_version: 0.1.0
 version: $(semver_version)-ci{build}
 assembly_info:
   patch: true
-  file: '**\AssemblyInfo.*'
+  file: '**/AssemblyInfo.*'
   assembly_version: $(semver_version)
   assembly_file_version: $(semver_version)
   assembly_informational_version: $(semver_version)
+build:
+  project: Source/Primedice.NET.sln
 before_build:
   - nuget restore
 deploy:
