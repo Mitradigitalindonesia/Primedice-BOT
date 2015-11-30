@@ -40,14 +40,14 @@ namespace KriPod.Primedice.Tests
         [TestMethod]
         public void GenerateRandomServerSeed()
         {
-            Assert.AreEqual(Config.ServerSeedBytes.Length, Utils.GenerateRandomServerSeed().Length);
+            Assert.AreEqual(Config.ServerSeedBytes.Length, Utils.GenerateRandomServerSeed().Bytes.Length);
         }
 
         [TestMethod]
         public void GenerateServerSeedHash()
         {
-            CollectionAssert.AreEqual(Config.ServerSeedHashedBytes, Utils.GenerateServerSeedHash(Config.ServerSeed));
-            CollectionAssert.AreEqual(Config.ServerSeedHashedBytes, Utils.GenerateServerSeedHash(Config.ServerSeedBytes));
+            CollectionAssert.AreEqual(Config.ServerSeedHashedBytes, new ServerSeed(Config.ServerSeed).GetHashed().Bytes);
+            CollectionAssert.AreEqual(Config.ServerSeedHashedBytes, new ServerSeed(Config.ServerSeedBytes).GetHashed().Bytes);
         }
 
         [TestMethod]

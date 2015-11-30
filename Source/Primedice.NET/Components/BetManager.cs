@@ -83,13 +83,13 @@ namespace KriPod.Primedice.Components
                 if (SimulatedSeedSet.Nonce == ulong.MaxValue) {
                     SimulatedSeedSet.Nonce = 0;
 
-                    var nextServerSeed = Utils.ByteArrayToHexString(Utils.GenerateRandomServerSeed());
+                    var nextServerSeed = Utils.GenerateRandomServerSeed();
                     SimulatedSeedSet.PreviousServerSeed = SimulatedSeedSet.ServerSeed;
                     SimulatedSeedSet.PreviousServerSeedHashed = SimulatedSeedSet.ServerSeedHashed;
                     SimulatedSeedSet.ServerSeed = SimulatedSeedSet.NextServerSeed;
                     SimulatedSeedSet.ServerSeedHashed = SimulatedSeedSet.NextServerSeedHashed;
                     SimulatedSeedSet.NextServerSeed = nextServerSeed;
-                    SimulatedSeedSet.NextServerSeedHashed = Utils.ByteArrayToHexString(Utils.GenerateServerSeedHash(nextServerSeed));
+                    SimulatedSeedSet.NextServerSeedHashed = nextServerSeed.GetHashed();
 
                 } else {
                     // Increment the simulated nonce by 1
@@ -128,7 +128,7 @@ namespace KriPod.Primedice.Components
         /// Changes the simulated server seed which affects the outcome of bets.</summary>
         /// <param name="nextSeed">The seed to be used after the next server seed change.</param>
         /// <returns>A <see cref="SeedSet"/> object if the simulated server seed was changed successfully.</returns>
-        public SeedSet ChangeSimulatedServerSeed(string nextSeed = null)
+        public SeedSet ChangeSimulatedServerSeed(ServerSeed nextSeed = null)
         {
             // Throw an exception if not in simulation mode
             if (WebClient.IsAuthorized) {
@@ -137,10 +137,10 @@ namespace KriPod.Primedice.Components
 
             // Generate a new server seed automatically if no next seed was specified
             if (nextSeed == null) {
-                nextSeed = Utils.ByteArrayToHexString(Utils.GenerateRandomServerSeed());
+                nextSeed = Utils.GenerateRandomServerSeed();
             }
 
-            var nextSeedHashed = Utils.ByteArrayToHexString(Utils.GenerateServerSeedHash(nextSeed));
+            var nextSeedHashed = nextSeed.GetHashed();
 
             // Change the values of the simulated SeedSet
             SimulatedSeedSet.PreviousServerSeed = SimulatedSeedSet.ServerSeed;

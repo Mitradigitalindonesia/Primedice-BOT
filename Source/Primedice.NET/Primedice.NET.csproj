@@ -43,9 +43,11 @@
     <Compile Include="Components\WalletManager.cs" />
     <Compile Include="Components\UserManager.cs" />
     <Compile Include="Converters\BetConditionConverter.cs" />
+    <Compile Include="Converters\ServerSeedConverter.cs" />
     <Compile Include="Converters\BetTimeConverter.cs" />
     <Compile Include="Enums\BetCondition.cs" />
     <Compile Include="ExtensionMethods.cs" />
+    <Compile Include="Models\ServerSeed.cs" />
     <Compile Include="Models\Bet.cs" />
     <Compile Include="Models\SeedSet.cs" />
     <Compile Include="ServerResponse.cs" />

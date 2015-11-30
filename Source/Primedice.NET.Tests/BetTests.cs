@@ -12,7 +12,7 @@ namespace KriPod.Primedice.Tests
             using (var client = new PrimediceClient()) {
                 // Change the client seed and the next server seed
                 client.Bets.ChangeClientSeed("5S7u5PSIEQsimc6XmhK7cMx7U0wWpT");
-                client.Bets.ChangeSimulatedServerSeed("be1961f028ff456db6b2ccdebef5265bc16b21bbc5fbba993abd2ff6767a39ad");
+                client.Bets.ChangeSimulatedServerSeed(new ServerSeed("be1961f028ff456db6b2ccdebef5265bc16b21bbc5fbba993abd2ff6767a39ad"));
 
                 // Apply the change of the next server seed immediately
                 client.Bets.ChangeSimulatedServerSeed();

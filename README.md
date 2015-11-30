@@ -1,6 +1,6 @@
 # Primedice.NET [![AppVeyor CI](https://img.shields.io/appveyor/ci/kripod/primedice-net/master.svg)](https://ci.appveyor.com/project/kripod/primedice-net) [![NuGet](https://img.shields.io/nuget/v/Primedice.NET.svg)](https://www.nuget.org/packages/Primedice.NET)
 Wraps the functionality of the [Primedice][] API in C#.
-The project is written in .NET 4.5 as portable class library.
+The project is written in .NET 4.5 as a portable class library.
 
 For versioning, [Semantic Versioning 2.0.0][]'s conventions are used.
 

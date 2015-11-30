@@ -56,29 +56,11 @@ namespace KriPod.Primedice
         }
 
         /// <summary>Generates a new random server seed.</summary>
-        /// <returns>A byte array containing a server seed.</returns>
-        public static byte[] GenerateRandomServerSeed()
+        /// <returns>A <see cref="ServerSeed"/> instance.</returns>
+        public static ServerSeed GenerateRandomServerSeed()
         {
-            // Return an array of random bytes
-            return WinRTCrypto.CryptographicBuffer.GenerateRandom(32);
-        }
-
-        /// <summary>Generates a hash for the given server seed.</summary>
-        /// <param name="serverSeed">The server seed to be hashed.</param>
-        /// <returns>A byte array containing the hash of <paramref name="serverSeed"/>.</returns>
-        public static byte[] GenerateServerSeedHash(string serverSeed)
-        {
-            // Hash the server seed with the SHA256 algorithm
-            var algorithm = WinRTCrypto.HashAlgorithmProvider.OpenAlgorithm(HashAlgorithm.Sha256);
-            return algorithm.HashData(Encoding.UTF8.GetBytes(serverSeed));
-        }
-
-        /// <summary>Generates a hash for the given server seed.</summary>
-        /// <param name="serverSeed">The server seed to be hashed.</param>
-        /// <returns>A byte array containing the hash of <paramref name="serverSeed"/>.</returns>
-        public static byte[] GenerateServerSeedHash(byte[] serverSeed)
-        {
-            return GenerateServerSeedHash(ByteArrayToHexString(serverSeed));
+            // Generate the seed from an array of random bytes
+            return new ServerSeed(WinRTCrypto.CryptographicBuffer.GenerateRandom(32));
         }
 
         /// <summary>Converts an array of bytes to a lowercase hexadecimal string.</summary>

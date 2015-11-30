@@ -50,7 +50,8 @@ namespace KriPod.Primedice
         public string ClientSeed { get; internal set; }
 
         [JsonProperty("server")]
-        public string ServerSeedHashed { get; internal set; }
+        [JsonConverter(typeof(ServerSeedConverter))]
+        public ServerSeed ServerSeedHashed { get; internal set; }
 
         [JsonProperty("timestamp")]
         [JsonConverter(typeof(BetTimeConverter))]
@@ -61,22 +62,14 @@ namespace KriPod.Primedice
         /// <summary>Verifies the validity of the bet's outcome.</summary>
         /// <param name="serverSeed">The server seed which was used for rolling.</param>
         /// <returns>True whether the outcome of the bet was calculated fairly.</returns>
-        public bool Verify(string serverSeed)
+        public bool Verify(ServerSeed serverSeed)
         {
             return CalculateRoll(serverSeed).Equals(Roll);
         }
 
-        /// <summary>Verifies the validity of the bet's outcome.</summary>
-        /// <param name="serverSeed">The server seed which was used for rolling.</param>
-        /// <returns>True whether the outcome of the bet was calculated fairly.</returns>
-        public bool Verify(byte[] serverSeed)
+        internal float CalculateRoll(ServerSeed serverSeed)
         {
-            return CalculateRoll(Utils.ByteArrayToHexString(serverSeed)).Equals(Roll);
-        }
-
-        internal float CalculateRoll(string serverSeed)
-        {
-            var key = serverSeed;
+            var key = serverSeed.HexString;
             var text = ClientSeed + "-" + Nonce;
 
             // Generate HMAC-SHA256 hash using server seed as key and text as message

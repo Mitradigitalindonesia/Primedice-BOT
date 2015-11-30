@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using KriPod.Primedice.Converters;
+using Newtonsoft.Json;
 
 namespace KriPod.Primedice
 {
@@ -35,20 +36,24 @@ namespace KriPod.Primedice
         [JsonProperty("client")]
         public string ClientSeed { get; private set; }
 
-        [JsonProperty("server")]
-        public string ServerSeedHashed { get; private set; }
-
         [JsonProperty("previous_client")]
         public string PreviousClientSeed { get; private set; }
 
+        [JsonProperty("server")]
+        [JsonConverter(typeof(ServerSeedConverter))]
+        public ServerSeed ServerSeedHashed { get; private set; }
+
         [JsonProperty("previous_server")]
-        public string PreviousServerSeed { get; private set; }
+        [JsonConverter(typeof(ServerSeedConverter))]
+        public ServerSeed PreviousServerSeed { get; private set; }
 
         [JsonProperty("previous_server_hashed")]
-        public string PreviousServerSeedHashed { get; private set; }
+        [JsonConverter(typeof(ServerSeedConverter))]
+        public ServerSeed PreviousServerSeedHashed { get; private set; }
 
         [JsonProperty("next_seed")]
-        public string NextServerSeed { get; private set; }
+        [JsonConverter(typeof(ServerSeedConverter))]
+        public ServerSeed NextServerSeed { get; private set; }
 
         [JsonProperty("otp_token")]
         public string OtpAuthToken { get; private set; }
