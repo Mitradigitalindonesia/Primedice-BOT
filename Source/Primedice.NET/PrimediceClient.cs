@@ -12,6 +12,9 @@ namespace KriPod.Primedice
         /// <summary>Contains methods for bet management.</summary>
         public BetManager Bets { get; }
 
+        /// <summary>Contains methods for wallet management.</summary>
+        public WalletManager Wallet { get; }
+
         private RestWebClient WebClient { get; }
 
         private bool IsDisposed { get; set; }
@@ -24,6 +27,7 @@ namespace KriPod.Primedice
 
             Users = new UserManager(WebClient);
             Bets = new BetManager(WebClient);
+            Wallet = new WalletManager(WebClient);
         }
 
         /// <summary>Disposes the resources used by the client.</summary>

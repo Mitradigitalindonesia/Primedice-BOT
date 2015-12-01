@@ -81,7 +81,7 @@ namespace KriPod.Primedice
             // Keep grabbing hash bytes while the lucky number is greater than 10^6
             for (var i = 0; i + 2 < bytes.Length; i += 2) {
                 // Start calculating the lucky number using the next 3 bytes
-                long lucky = (bytes[i] << 16) + (bytes[i + 1] << 8) + bytes[i + 2];
+                var lucky = (bytes[i] << 16) + (bytes[i + 1] << 8) + bytes[i + 2];
 
                 // Determine whether the iteration count is odd or even
                 if (i % 4 == 0) {
