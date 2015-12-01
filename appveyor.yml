@@ -1,6 +1,6 @@
 # Specify the version and configuration of the project
 environment:
-  semver_version: '0.1.0'
+  semver_version: '0.2.0'
 version: $(semver_version)-ci{build}
 configuration: Release
 
@@ -29,7 +29,6 @@ deploy:
     secure: 9Ye4uKc6ajyyP+DceXAUufu0xaGA36Fzz8TM0VLu94+1327wHLQsXbCVS92tPcnp
   on:
     # Only deploy tagged commits on the master branch
-    appveyor_repo_tag: true
     branch: master
   artifact: /.*\.nupkg/
 
