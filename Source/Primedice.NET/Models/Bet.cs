@@ -76,33 +76,31 @@ namespace KriPod.Primedice
             var algorithm = WinRTCrypto.MacAlgorithmProvider.OpenAlgorithm(MacAlgorithm.HmacSha512);
             var hasher = algorithm.CreateHash(Encoding.UTF8.GetBytes(key));
             hasher.Append(Encoding.UTF8.GetBytes(text));
-            var hash = Utils.ByteArrayToHexString(hasher.GetValueAndReset());
+            var bytes = hasher.GetValueAndReset();
 
-            double lucky;
-            var i = 0;
+            // Keep grabbing hash bytes while the lucky number is greater than 10^6
+            for (var i = 0; i + 2 < bytes.Length; i += 2) {
+                // Start calculating the lucky number using the next 3 bytes
+                long lucky = (bytes[i] << 16) + (bytes[i + 1] << 8) + bytes[i + 2];
 
-            // Keep grabbing characters from the hash while lucky is greater than 10^6
-            while (true) {
-                // Examine an 5-char hex string as a double
-                var hashStartIndex = i * 5;
-                lucky = Convert.ToUInt32(hash.Substring(hashStartIndex, 5), 16);
+                // Determine whether the iteration count is odd or even
+                if (i % 4 == 0) {
+                    // Even: Use the first 5 digits of the hex string from the 3 bytes
+                    lucky = (lucky - lucky % 16) >> 4;
 
+                } else {
+                    // Odd: Use the last 5 digits of the hex string from the 3 bytes
+                    lucky %= 2 << 24;
+                }
+
+                // Return a lucky number if possible
                 if (lucky < 1000000) {
-                    break;
+                    return (float)(lucky % 10000) / 100;
                 }
-
-                // If the end of the hash is reached, just default to the highest number
-                if (hashStartIndex + 5 > 128) {
-                    return 99.99F;
-                }
-
-                i++;
             }
-            
-            lucky %= 10000;
-            lucky /= 100;
 
-            return (float)lucky;
+            // If the end of the hash is reached, just default to the highest number
+            return 99.99F;
         }
     }
 }

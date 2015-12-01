@@ -6,7 +6,7 @@ namespace KriPod.Primedice.Tests
     public class BetTests
     {
         [TestMethod]
-        public void CreateAndVerify()
+        public void CreateAndVerifySimulated()
         {
             // Initialize a new, unauthorized client instance for bet simulation
             using (var client = new PrimediceClient()) {
