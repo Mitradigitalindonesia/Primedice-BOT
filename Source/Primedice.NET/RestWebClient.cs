@@ -3,18 +3,17 @@ using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
+using System.Threading.Tasks;
 
 namespace KriPod.Primedice
 {
-    class RestWebClient : IDisposable
+    class RestWebClient
     {
         private static readonly HttpClient HttpClient;
 
         internal bool IsAuthorized => AuthToken != null;
 
         private string AuthToken { get; }
-
-        private bool IsDisposed { get; set; }
 
         static RestWebClient()
         {
@@ -37,20 +36,20 @@ namespace KriPod.Primedice
             }
         }
 
-        public T Get<T>(string command)
+        public Task<T> Get<T>(string command)
         {
             return RequestObject<T>(HttpMethod.Get, command);
         }
 
-        public T Post<T>(string command, Dictionary<string, string> requestContent)
+        public Task<T> Post<T>(string command, Dictionary<string, string> requestContent)
         {
             return RequestObject<T>(HttpMethod.Post, command, requestContent);
         }
 
-        private T RequestObject<T>(HttpMethod requestMethod, string command, Dictionary<string, string> requestContent = null)
+        private async Task<T> RequestObject<T>(HttpMethod requestMethod, string command, Dictionary<string, string> requestContent = null)
         {
             // Query the server for a response
-            var responseString = SendRequest(requestMethod, command, requestContent);
+            var responseString = await SendRequest(requestMethod, command, requestContent);
 
             try {
                 // Try to decode the JSON response
@@ -62,7 +61,7 @@ namespace KriPod.Primedice
             }
         }
 
-        private string SendRequest(HttpMethod requestMethod, string requestRelativeUrl, Dictionary<string, string> requestContent = null)
+        private async Task<string> SendRequest(HttpMethod requestMethod, string requestRelativeUrl, Dictionary<string, string> requestContent = null)
         {
             // Send an authenticated request if possible
             if (IsAuthorized) {
@@ -77,27 +76,9 @@ namespace KriPod.Primedice
                 }
 
                 // Wait for the response, and then return it as a string
-                var response = HttpClient.SendAsync(requestMessage).Result;
-                return response.Content.ReadAsStringAsync().Result;
+                var response = await HttpClient.SendAsync(requestMessage);
+                return await response.Content.ReadAsStringAsync();
             }
-        }
-
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        protected virtual void Dispose(bool disposing)
-        {
-            if (IsDisposed) return;
-
-            if (disposing) {
-                // Free managed resources
-                HttpClient.Dispose();
-            }
-
-            IsDisposed = true;
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Threading.Tasks;
 
 namespace KriPod.Primedice.Components
 {
@@ -18,7 +19,8 @@ namespace KriPod.Primedice.Components
             if (!webClient.IsAuthorized) {
                 // Initialize a new simulated seed set
                 SimulatedSeedSet = new SeedSet();
-                ChangeClientSeed();
+                ChangeClientSeed().Wait();
+
                 for (var i = 2; i > 0; i--) {
                     ChangeSimulatedServerSeed();
                 }
@@ -27,10 +29,11 @@ namespace KriPod.Primedice.Components
 
         /// <summary>Gets a specific <see cref="Bet"/> by ID.</summary>
         /// <param name="id">ID of the sought <see cref="Bet"/>.</param>
-        /// <returns>A <see cref="Bet"/> object, or null if no match was found.</returns>
-        public Bet Get(ulong id)
+        /// <returns>An awaitable <see cref="Bet"/> object, or null if no match was found.</returns>
+        public async Task<Bet> Get(ulong id)
         {
-            return WebClient.Get<ServerResponse>("bets/" + id).Bet;
+            var response = await WebClient.Get<ServerResponse>("bets/" + id);
+            return response.Bet;
         }
 
         /*public object GetLast30OfSite()
@@ -42,16 +45,17 @@ namespace KriPod.Primedice.Components
         /// <param name="amount">Amount of satoshi to bet.</param>
         /// <param name="condition">Condition of the bet, relative to <paramref name="target"/>.</param>
         /// <param name="target">Target of the dice roll.</param>
-        /// <returns>A <see cref="Bet"/> object if the bet was placed successfully.</returns>
-        public Bet Create(double amount, BetCondition condition, float target)
+        /// <returns>An awaitable <see cref="Bet"/> object if the bet was placed successfully.</returns>
+        public async Task<Bet> Create(double amount, BetCondition condition, float target)
         {
             if (WebClient.IsAuthorized) {
                 // Create a new bet on the server
-                return WebClient.Post<ServerResponse>("bet", new Dictionary<string, string> {
+                var response = await WebClient.Post<ServerResponse>("bet", new Dictionary<string, string> {
                     ["amount"] = amount.ToString(CultureInfo.InvariantCulture),
                     ["target"] = target.ToString(CultureInfo.InvariantCulture),
                     ["condition"] = condition.ToJsonString()
-                }).Bet;
+                });
+                return response.Bet;
 
             } else {
                 // Create a new simulated bet
@@ -103,8 +107,8 @@ namespace KriPod.Primedice.Components
 
         /// <summary>Changes the client seed which affects the outcome of bets.</summary>
         /// <param name="seed">The new seed to be used.</param>
-        /// <returns>A <see cref="SeedSet"/> object if the client seed was changed successfully.</returns>
-        public SeedSet ChangeClientSeed(string seed = null)
+        /// <returns>An awaitable <see cref="SeedSet"/> object if the client seed was changed successfully.</returns>
+        public async Task<SeedSet> ChangeClientSeed(string seed = null)
         {
             // Generate a new client seed automatically if no seed was specified
             if (string.IsNullOrEmpty(seed)) {
@@ -113,9 +117,10 @@ namespace KriPod.Primedice.Components
 
             if (WebClient.IsAuthorized) {
                 // Change the client seed on the server
-                return WebClient.Post<ServerResponse>("seed", new Dictionary<string, string> {
+                var response = await WebClient.Post<ServerResponse>("seed", new Dictionary<string, string> {
                     ["seed"] = seed
-                }).SeedSet;
+                });
+                return response.SeedSet;
 
             } else {
                 // Change the client seed locally

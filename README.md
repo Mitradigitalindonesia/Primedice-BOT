@@ -15,14 +15,14 @@ using KriPod.Primedice;
 var username = "<username>";
 
 // Initialize a new unauthorized instance of PrimediceClient
-using (var client = new PrimediceClient()) {
-    // Create a new user
-    var user = client.Users.Create(username);
+var client = new PrimediceClient();
 
-    // The following is the most important property of the newly-created user
-    // Store the value of AuthToken in order to access the created account later
-    var authToken = user.AuthToken;
-}
+// Create a new user
+var user = client.Users.Create(username);
+
+// The following is the most important property of the newly-created user
+// Store the value of AuthToken in order to access the created account later
+var authToken = user.AuthToken;
 ```
 
 ### Making a bet with an existing user
@@ -36,8 +36,8 @@ var condition = BetCondition.LowerThan;
 var target = 49.5;
 
 // Initialize a new authorized instance of PrimediceClient
-using (var client = new PrimediceClient(authToken)) {
-    // Place a new bet with the parameters specified above
-    client.Bets.Create(amount, condition, target);
-}
+var client = new PrimediceClient(authToken);
+
+// Place a new bet with the parameters specified above
+client.Bets.Create(amount, condition, target);
 ```

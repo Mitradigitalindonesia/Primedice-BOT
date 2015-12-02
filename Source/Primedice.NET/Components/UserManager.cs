@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace KriPod.Primedice.Components
 {
@@ -14,8 +15,8 @@ namespace KriPod.Primedice.Components
 
         /// <summary>Gets a specific <see cref="User"/> by username.</summary>
         /// <param name="username">Username of the sought <see cref="User"/>.</param>
-        /// <returns>A <see cref="User"/> object, or null if no match was found.</returns>
-        public User Get(string username)
+        /// <returns>An awaitable <see cref="User"/> object, or null if no match was found.</returns>
+        public async Task<User> Get(string username)
         {
             // Try querying self if no username was specified
             var isQueryingSelf = string.IsNullOrEmpty(username);
@@ -26,23 +27,24 @@ namespace KriPod.Primedice.Components
             }
 
             // Return the appropriate response object
-            return WebClient.Get<ServerResponse>("users/" + (isQueryingSelf ? "1" : username)).UserExtended;
+            var response = await WebClient.Get<ServerResponse>("users/" + (isQueryingSelf ? "1" : username));
+            return response.UserExtended;
         }
 
         /// <summary>Gets the <see cref="User"/> which belongs to the current <see cref="PrimediceClient"/> instance.</summary>
-        /// <returns>A <see cref="User"/> object, or null if the current <see cref="PrimediceClient"/> is not authenticated.</returns>
-        public UserExtended GetSelf()
+        /// <returns>An awaitable <see cref="User"/> object, or null if the current <see cref="PrimediceClient"/> is not authenticated.</returns>
+        public async Task<UserExtended> GetSelf()
         {
-            return Get(null) as UserExtended;
+            return await Get(null) as UserExtended;
         }
 
         /// <summary>Creates a new <see cref="User"/>.</summary>
         /// <param name="username">Username of the <see cref="User"/> to be created.</param>
         /// <param name="affiliateUsername">Username of the <see cref="User"/> who referred the <see cref="User"/> to be created.</param>
-        /// <returns>A <see cref="User"/> object if the registration was successful.</returns>
-        public UserExtended Create(string username, string affiliateUsername = null)
+        /// <returns>An awaitable <see cref="User"/> object if the registration was successful.</returns>
+        public async Task<UserExtended> Create(string username, string affiliateUsername = null)
         {
-            var response = WebClient.Post<ServerResponse<UserMetaData>>("register", new Dictionary<string, string> {
+            var response = await WebClient.Post<ServerResponse<UserMetaData>>("register", new Dictionary<string, string> {
                 ["username"] = username,
                 ["affiliate"] = affiliateUsername
             });

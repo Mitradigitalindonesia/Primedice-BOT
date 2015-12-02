@@ -29,6 +29,7 @@ deploy:
     secure: 9Ye4uKc6ajyyP+DceXAUufu0xaGA36Fzz8TM0VLu94+1327wHLQsXbCVS92tPcnp
   on:
     # Only deploy tagged commits on the master branch
+    appveyor_repo_tag: true
     branch: master
   artifact: /.*\.nupkg/
 
