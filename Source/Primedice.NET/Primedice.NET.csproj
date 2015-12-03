@@ -47,6 +47,7 @@
     <Compile Include="Converters\BetTimeConverter.cs" />
     <Compile Include="Enums\BetCondition.cs" />
     <Compile Include="ExtensionMethods.cs" />
+    <Compile Include="Models\DepositAddress.cs" />
     <Compile Include="Models\Withdrawal.cs" />
     <Compile Include="Models\ServerSeed.cs" />
     <Compile Include="Models\Bet.cs" />

@@ -1,6 +1,6 @@
 # Specify the version and configuration of the project
 environment:
-  semver_version: '0.2.0'
+  semver_version: '0.3.0'
 version: $(semver_version)-ci{build}
 configuration: Release
 
