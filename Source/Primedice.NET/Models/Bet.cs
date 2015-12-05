@@ -35,7 +35,7 @@ namespace KriPod.Primedice
         public double Amount { get; internal set; }
 
         [JsonProperty("profit")]
-        public double ProfitAmount { get; private set; }
+        public double ProfitAmount { get; internal set; }
 
         [JsonProperty("win")]
         public bool IsWon { get; internal set; }

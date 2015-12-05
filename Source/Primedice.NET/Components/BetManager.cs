@@ -48,6 +48,9 @@ namespace KriPod.Primedice.Components
         /// <returns>An awaitable <see cref="Bet"/> object if the bet was placed successfully.</returns>
         public async Task<Bet> Create(double amount, BetCondition condition, float target)
         {
+            // Round the target automatically
+            target = (float)Math.Round(target, 2, MidpointRounding.AwayFromZero);
+
             if (WebClient.IsAuthorized) {
                 // Create a new bet on the server
                 var response = await WebClient.Post<ServerResponse>("bet", new Dictionary<string, string> {
@@ -74,14 +77,26 @@ namespace KriPod.Primedice.Components
                 var roll = bet.CalculateRoll(SimulatedSeedSet.ServerSeed);
                 bet.Roll = roll;
 
-                // Determine whether the bet was won or lost
+                // Determine whether the bet was won or lost and calculate the multiplier
+                bool isWon;
+                float multiplier;
                 if (condition == BetCondition.LowerThan) {
-                    bet.IsWon = roll < target;
+                    isWon = roll < target;
+                    multiplier = 100 / target * (1 - Utils.HouseEdge);
                 } else {
-                    bet.IsWon = roll > target;
+                    isWon = roll > target;
+                    multiplier = 100 / (100 - target) * (1 - Utils.HouseEdge);
                 }
+                multiplier = (float)Math.Floor(multiplier * 100000) / 100000;
 
-                // TODO: Set bet.Multiplier
+                // Set the properties of the bet
+                bet.IsWon = isWon;
+                bet.Multiplier = multiplier;
+                if (isWon) {
+                    bet.ProfitAmount = amount * (multiplier - 1);
+                } else {
+                    bet.ProfitAmount = -amount;
+                }
 
                 // Generate a new server seed and reset nonce to 0 if necessary
                 if (SimulatedSeedSet.Nonce == ulong.MaxValue) {

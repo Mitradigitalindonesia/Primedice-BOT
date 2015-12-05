@@ -36,7 +36,7 @@ var serverSeed = "<serverSeed>";
 var authToken =  "<authToken>";
 var amount = 1; // 0.00000001 BTC
 var condition = BetCondition.LowerThan;
-var target = 49.5;
+var target = 49.5F;
 
 // Initialize a new authorized instance of PrimediceClient
 // (Bet simulation is available by using an unauthorized instance)

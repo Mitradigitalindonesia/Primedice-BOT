@@ -10,6 +10,8 @@ namespace KriPod.Primedice
     {
         internal const string ApiUrlBase = "https://api.primedice.com/api/";
 
+        internal const float HouseEdge = 0.01F;
+
         private const ulong SatoshiInBitcoin = 100000000;
         private const byte BitcoinPrecisionDigits = 8;
 
