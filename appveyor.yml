@@ -1,0 +1,38 @@
+# Specify the version and configuration of the project
+environment:
+  semver_version: '0.3.0'
+version: $(semver_version)-ci{build}
+configuration: Release
+
+# Patch assembly versions
+assembly_info:
+  patch: true
+  file: '**\AssemblyInfo.*'
+  assembly_version: $(semver_version)
+  assembly_file_version: $(semver_version)
+  assembly_informational_version: $(semver_version)
+
+before_build:
+  # Restore NuGet packages
+  - nuget restore "Source"
+build:
+  # Automatically pack NuGet packages
+  publish_nuget: true
+
+  # Enable parallel building
+  parallel: true
+
+# Deploy NuGet packages to the official NuGet repository
+deploy:
+  provider: NuGet
+  api_key:
+    secure: 9Ye4uKc6ajyyP+DceXAUufu0xaGA36Fzz8TM0VLu94+1327wHLQsXbCVS92tPcnp
+  on:
+    # Only deploy tagged commits on the master branch
+    appveyor_repo_tag: true
+    branch: master
+  artifact: /.*\.nupkg/
+
+# Cache the downloaded NuGet packages
+cache:
+  - Source\packages -> '**\packages.config'
